@@ -1,9 +1,15 @@
 <?php return array (
-  'defaultLanguage' => 'hy',
+  'defaultLanguage' => 'en',
   'availableLanguages' => 
   array (
     'ru' => 'RUSSIAN',
-    'en' => 'ENGLESHEEEE',
     'hy' => 'ARMENIAN',
+    'en' => 'English',
+  ),
+  'translationsFolder' => 'translations/',
+  'translationFileType' => '.json',
+  'translatedFiles' => 
+  array (
+    0 => 'index.php',
   ),
 );
