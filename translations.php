@@ -5,25 +5,38 @@ include_once 'translate.php';
 
 $selectedLanguage = '';
 $translations = array();
+$language = new Language();
+$translate = new Translate();
 
-function setFileName(string $fileName = null)
+function setFileName(string $fileName = null) : int
 {
     if(is_null($fileName)) return -1;
     
-    global $selectedLanguage, $translations;
+    global $selectedLanguage, $translations, $language, $translate;
 
-    $selectedLanguage = new Language();
-    $selectedLanguage = $selectedLanguage->getSelectedLanguage();
+    $selectedLanguage = $language->getSelectedLanguage();     
+    $translations = $translate->getTranslationsFromDB(
+        pathinfo($fileName, PATHINFO_FILENAME), 
+        $selectedLanguage
+    );
+    return 1;
+}
 
-    $translations = new Translate(); 
-    $translations = $translations->getTranslationsFromDB(pathinfo($fileName, PATHINFO_FILENAME), $selectedLanguage);
+function setLanguage(string $lang = null) : int
+{
+    return $language->setLanguage($lang);
+}
+
+function getAvailableLanguages() : array
+{
+    return $language->getAvailableLanguages();
 }
 
 function t(string $keyName = null) : string
 {
     global $selectedLanguage, $translations;
-    if(is_null($keyName)) return '';
-    return array_key_exists($keyName, $translations) ? $translations[$keyName] : '';
+    return array_key_exists($keyName, $translations) ? $translations[$keyName] : $keyName;
 
 }
 // setFileName('index.php');
+// echo t('sjsh');
