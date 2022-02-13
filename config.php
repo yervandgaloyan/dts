@@ -1,4 +1,5 @@
 <?php return array (
+  'sessionExpire' => '10800',
   'defaultLanguage' => 'en',
   'availableLanguages' => 
   array (
@@ -10,6 +11,5 @@
   'translationFileType' => '.json',
   'translatedFiles' => 
   array (
-    0 => 'index.php',
   ),
 );

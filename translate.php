@@ -105,8 +105,8 @@ class Translate extends Language
 }
 
 $tr = new Translate;
-$tr->addTranslatedFile('index.php');
-// $tr->removeTranslatedFile('index.php');
+// $tr->addTranslatedFile('index.php');
+$tr->removeTranslatedFile('index.php');
 // // $translate->setTranslationsToDB('index.json', $translate->getTranslationKeysFromFile('index.php'));
 // $tr->setTranslationsToDB('index',$tr->compareTranslationsWithDB($tr->getTranslationKeysFromFile('index.php'), $tr->getTranslationsFromDB('index', 'en')), 'en');
 // $re = '/t\\((?:\'|")[a-zA-Z0-9_-]*(?:\'|")\\)/i';

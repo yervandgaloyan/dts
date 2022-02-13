@@ -26,7 +26,7 @@ class Language extends Settings{
     {
         return parent::getConfigByName('availableLanguages');
     }
-
+    
     // Add language
     public function addLanguage(string $langCode = null, string $langName = null) : int
     {
