@@ -3,7 +3,6 @@
   'defaultLanguage' => 'en',
   'availableLanguages' => 
   array (
-    'ru' => 'RUSSIAN',
     'hy' => 'ARMENIAN',
     'en' => 'English',
   ),

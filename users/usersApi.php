@@ -1,6 +1,5 @@
 <?php
-
-include_once 'sign-in.php';
+include_once 'users.php';
 
 class UsersApi extends Users{
     
@@ -9,12 +8,17 @@ class UsersApi extends Users{
     public function __construct() {
         if (isset($_GET['isSignIn']))
         {
-            return parent::isSignIn();
+            echo parent::isSignIn();
         }elseif (isset($_GET['signIn']) && isset($_GET['username']) && isset($_GET['password']))
         {
-            return parent::signIn($_GET['username'], $_GET['password']);
+            echo parent::signIn($_GET['username'], $_GET['password']);
+            header('Location: ../sign-in.php');
         }elseif (isset($_GET['signOut'])) {
-            return parent::signOut();
+            echo parent::signOut();
+            header('Location: ../sign-in.php');
+
         }
     }
 }
+
+new UsersApi();

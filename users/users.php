@@ -1,6 +1,6 @@
 <?php
 
-include_once '../settings.php';
+include_once __DIR__.'/../core/settings.php';
 
 class Users extends Settings{
 
@@ -18,7 +18,7 @@ class Users extends Settings{
 
         setcookie("username", $username, 2147483647, "/");
         setcookie("session", $this->addSession($this->generateId(), $user['user_id']), 2147483647, "/");
-        setcookie("user_id", $$user['user_id'], 2147483647, "/");
+        setcookie("user_id", $user['user_id'], 2147483647, "/");
         setcookie("role", $user['role'], 2147483647, "/");
         return 1;
         
@@ -26,10 +26,10 @@ class Users extends Settings{
 
     public function signOut() : int
     {
-        setcookie("username", "", time() - 3600);
-        setcookie("session", "", time() - 3600);
-        setcookie("user_id", "", time() - 3600);
-        setcookie("role", "", time() - 3600);
+        setcookie("username", "", time() - 3600, "/");
+        setcookie("session", "", time() - 3600, "/");
+        setcookie("user_id", "", time() - 3600, "/");
+        setcookie("role", "", time() - 3600, "/");
         return 1;
     }
 
@@ -40,7 +40,7 @@ class Users extends Settings{
         $user_id = $this->generateId();
         $newUser = array('user_id' => $user_id, 'password' => password_hash($password, PASSWORD_DEFAULT), 'role' => $role ,'registration_date' => time());
         $this->users[$username] = $newUser;
-        if(file_put_contents('users.php', '<?php return ' . var_export($this->users, true) . ';')) return 1;
+        if(file_put_contents('usersdb.php', '<?php return ' . var_export($this->users, true) . ';')) return 1;
         return 0;
     }
     
@@ -55,7 +55,7 @@ class Users extends Settings{
     // Get users
     private function getUsers() : bool
     {
-        $this->users = include 'users.php';
+        $this->users = include 'usersdb.php';
         return true;
     }
     
@@ -99,7 +99,7 @@ class Users extends Settings{
         $this->getSessions();
         $newSession = array('user_id' => $user_id, 'sign_in_date' => time(), 'expire_date' => time()+intval(parent::getConfigByName('sessionExpire')));
         $this->session[$session_id] = $newSession;
-        if(file_put_contents('sessions.php', '<?php return ' . var_export($this->session, true) . ';')) return $newSession;
+        if(file_put_contents('sessions.php', '<?php return ' . var_export($this->session, true) . ';')) return $session_id;
         return 0;
     }
 
@@ -107,7 +107,7 @@ class Users extends Settings{
     {
         if(is_null($session_id) || is_null($user_id)) return -1;
         $session = $this->getSessionBySessionId($session_id);
-        if($session != 1) return 0;
+        if($session == -1 && $session == 0) return -2;
         if($session['user_id'] == $user_id && $session['expire_date'] > time()) return 1;
         return 0;
     }

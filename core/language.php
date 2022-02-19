@@ -21,6 +21,19 @@ class Language extends Settings{
         return 1;
     }
 
+    // Set default language
+    public function setDefaultLanguage(string $langCode = null) : int
+    {
+        if(is_null($langCode)) return -1;
+        if(!$this->isLanguageAvailable($langCode)) return -2;
+        return parent::setConfig('defaultLanguage', $langCode) ? 1 : 0;
+    }    
+    
+    // Set default language
+    public function getDefaultLanguage() : string
+    {
+        return parent::getConfigByName('defaultLanguage');
+    }
     // return all available languages
     public function getAvailableLanguages() : array
     {
@@ -35,6 +48,7 @@ class Language extends Settings{
         $availableLanguages = $this->getAvailableLanguages();
         $availableLanguages += array($langCode => $langName);
         // parent::setTranslationsToDB();
+        print_r($availableLanguages);
         return parent::setConfig('availableLanguages', $availableLanguages) ? 1 : 0;
     }
     
@@ -56,10 +70,15 @@ class Language extends Settings{
     }
 }
 // $lang = new Language;
-// $lang->addLanguage('en', 'English');
+// $lang->addLanguage('efndd', 'English');
+
+// print_r(json_decode('{"hy":"Հայերեն","ru":"RUSSIAN","en":"English"}', true));
 // $lang->removeLanguage('en');
 // print_r($lang->getAvailableLanguages());
 // echo $lang->setLanguage("hy");
 // $availableLanguages = $lang->getAvailableLanguages();
 // echo $lang->isLanguageAvailable('edn');
+
+// echo $lang->setDefaultLanguage('hy');
+// echo $lang->getDefaultLanguage();
 ?>
