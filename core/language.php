@@ -48,10 +48,10 @@ class Language extends Settings{
         $availableLanguages = $this->getAvailableLanguages();
         $availableLanguages += array($langCode => $langName);
         // parent::setTranslationsToDB();
-        print_r($availableLanguages);
+        // print_r($availableLanguages);
+       
         return parent::setConfig('availableLanguages', $availableLanguages) ? 1 : 0;
     }
-    
     // Remove language from available languages
     public function removeLanguage(string $langCode = null) : int
     {
@@ -70,7 +70,7 @@ class Language extends Settings{
     }
 }
 // $lang = new Language;
-// $lang->addLanguage('efndd', 'English');
+// $lang->addLanguage('efnddd', 'English');
 
 // print_r(json_decode('{"hy":"Հայերեն","ru":"RUSSIAN","en":"English"}', true));
 // $lang->removeLanguage('en');

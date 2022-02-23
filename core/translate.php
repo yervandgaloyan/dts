@@ -28,8 +28,8 @@ class Translate extends Language
     public function getTranslationsFromDB(string $fileName = null, string $language = null)
     {
         if(is_null($fileName) || is_null($language)) return -1;
-        if(!file_exists($this->translationsFolder . $language . '/' . $fileName . $this->translationFileType)) return array(); 
-        $json = json_decode(file_get_contents($this->translationsFolder . $language . '/'. $fileName . $this->translationFileType), true);
+        if(!file_exists(__dir__ . '/../' . $this->translationsFolder . $language . '/' . $fileName . $this->translationFileType)) return array(); 
+        $json = json_decode(file_get_contents(__dir__ . '/../' . $this->translationsFolder . $language . '/'. $fileName . $this->translationFileType), true);
         return $json;
     }
 
@@ -37,10 +37,10 @@ class Translate extends Language
     {
         if(is_null($fileName) || is_null($translations) || is_null($language)) return -1;
         
-        if (!file_exists($this->translationsFolder . $language)) mkdir($this->translationsFolder . $language, 0755);
+        if (!file_exists(__dir__ . '/../' . $this->translationsFolder . $language)) mkdir(__dir__ . '/../' . $this->translationsFolder . $language, 0755, true);
         $translations += array('lastUpdate' => time());
 
-        file_put_contents($this->translationsFolder . $language . '/'. $fileName . $this->translationFileType, json_encode($translations));
+        file_put_contents(__dir__ . '/../' . $this->translationsFolder . $language . '/'. $fileName . $this->translationFileType, json_encode($translations));
         return 1;
     }
 
@@ -60,20 +60,23 @@ class Translate extends Language
     {
         if(is_null($fileName)) return -1;
         $translatedFiles = parent::getConfigByName('translatedFiles');
-        if(in_array($fileName, $translatedFiles)) return 0;
-
-        array_push($translatedFiles, $fileName);
-        parent::setConfig('translatedFiles', $translatedFiles);
-        
+        if(!in_array($fileName, $translatedFiles)) {
+            array_push($translatedFiles, $fileName);
+            parent::setConfig('translatedFiles', $translatedFiles);
+        }
         $availableLanguages = parent::getAvailableLanguages();
+        $translationKeys = $this->getTranslationKeysFromFile($fileName);
         foreach ($availableLanguages as $key => $value) 
         {
             $this->setTranslationsToDB(
                 pathinfo($fileName, PATHINFO_FILENAME),
                 $this->compareTranslationsWithDB(
-                    $this->getTranslationKeysFromFile($fileName),
-                    array()
-                ), 
+                    $translationKeys == 0 ? array() : $translationKeys,
+                    $this->getTranslationsFromDB(pathinfo(
+                        $fileName, PATHINFO_FILENAME), 
+                        $key
+                    )
+                ),
                 $key 
             );
         }
@@ -90,26 +93,41 @@ class Translate extends Language
         $availableLanguages = parent::getAvailableLanguages();
         foreach ($availableLanguages as $key => $value) 
         {
-            if(file_exists($this->translationsFolder . $key . '/' .pathinfo($fileName, PATHINFO_FILENAME) . $this->translationFileType)) 
+            if(file_exists(__dir__ . '/../' . $this->translationsFolder . $key . '/' .pathinfo($fileName, PATHINFO_FILENAME) . $this->translationFileType)) 
             {
-                unlink($this->translationsFolder . $key . '/' . pathinfo($fileName, PATHINFO_FILENAME) . $this->translationFileType);
+                unlink(__dir__ . '/../' . $this->translationsFolder . $key . '/' . pathinfo($fileName, PATHINFO_FILENAME) . $this->translationFileType);
             }
         }
-        unset($translatedFiles[array_search($fileName, $translatedFiles)]);
-
-        print_r($translatedFiles);
+        array_splice($translatedFiles, array_search($fileName, $translatedFiles), 1);
         
         parent::setConfig('translatedFiles', $translatedFiles);
         return 1;    
     }    
+    
+    public function getTranslatedFiles(){
+        return parent::getConfigByName('translatedFiles');
+    }
+
+    public function updateLanguageFiles() : int{
+        foreach ($this->getTranslatedFiles() as $key => $value) {
+            $this->addTranslatedFile($value);
+        }  
+        return 1;
+    }
 }
 
 // $tr = new Translate;
-// $tr->addTranslatedFile('index.php');
-// $tr->removeTranslatedFile('index.php');
+// $tr->addTranslatedFile('../test.php');
+// $tr->removeTranslatedFile('ddsd.php');
 // // $translate->setTranslationsToDB('index.json', $translate->getTranslationKeysFromFile('index.php'));
 // $tr->setTranslationsToDB('index',$tr->compareTranslationsWithDB($tr->getTranslationKeysFromFile('index.php'), $tr->getTranslationsFromDB('index', 'en')), 'en');
 // $re = '/t\\((?:\'|")[a-zA-Z0-9_-]*(?:\'|")\\)/i';
 // $str = file_get_contents('index.php');
 // var_dump( $str);
+
+// print_r($tr->getTranslatedFiles());
+
+// foreach ($tr->getTranslatedFiles() as $key => $value) {
+//     $tr->addTranslatedFile($value);
+// }
 

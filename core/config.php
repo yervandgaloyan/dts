@@ -1,9 +1,9 @@
 <?php return array (
   'sessionExpire' => '10800',
-  'defaultLanguage' => 'en',
+  'defaultLanguage' => 'hy',
   'availableLanguages' => 
   array (
-    'hy' => 'Հայերեն',
+    'hy' => 'Armenian',
     'ru' => 'Russian',
     'en' => 'English',
   ),
@@ -11,5 +11,7 @@
   'translationFileType' => '.json',
   'translatedFiles' => 
   array (
+    0 => '../test.php',
+    1 => '../index.php',
   ),
 );

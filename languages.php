@@ -237,6 +237,8 @@
                     
                     xhr.open('GET', `${dir}/coreApi/languageApi.php?addLanguage&langCode=${langCode}&langName=${langName}`);
                     xhr.send();
+                    xhr.open('GET', `${dir}/coreApi/translateApi.php?updateLanguageFiles`);
+                    xhr.send();
                     // console.log(langCode);console.log(langName);
                     location.reload();
                   }
