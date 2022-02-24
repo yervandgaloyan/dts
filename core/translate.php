@@ -114,13 +114,43 @@ class Translate extends Language
         }  
         return 1;
     }
+
+    public function updateAndGetTranslationFile($fileName, $langCode){
+        $this->setTranslationsToDB(pathinfo($fileName, PATHINFO_FILENAME),$this->compareTranslationsWithDB($this->getTranslationKeysFromFile($fileName), $this->getTranslationsFromDB(pathinfo($fileName, PATHINFO_FILENAME), $langCode)), $langCode);
+        return $this->getTranslationsFromDB(pathinfo($fileName, PATHINFO_FILENAME), $langCode);
+    }
+
+    public function getTranslationFileAllLanguages($fileName){
+        $availableLanguages = parent::getAvailableLanguages();
+        $translations = array();
+        foreach ($availableLanguages as $key => $value) {
+            
+            $translations = array_merge($translations, array($key => $this->updateAndGetTranslationFile($fileName, $key)));
+        }
+        return $translations;
+    }
+
+    public function updateTranslationByKey($fileName, $langCode, $key, $value){
+        $trans = $this->getTranslationsFromDB(pathinfo($fileName, PATHINFO_FILENAME), $langCode);
+        $trans[$key] = $value;
+        $this->setTranslationsToDB(pathinfo($fileName, PATHINFO_FILENAME), $trans, $langCode);
+        return 1;
+    }
 }
 
 // $tr = new Translate;
+// $trans = $tr->getTranslationsFromDB(pathinfo('../test.php', PATHINFO_FILENAME), 'en');
+// print_r($trans);
+// $trans['a1'] = 'AAAAAA1';
+// print_r($trans);
+// $tr->setTranslationsToDB(pathinfo('../test.php', PATHINFO_FILENAME), $trans, 'en');
+// print_r($tr->getTranslationsFromDB(pathinfo('../test.php', PATHINFO_FILENAME), 'en'));
+// print_r($tr->getTranslationFileAllLanguages('../test.php'));
 // $tr->addTranslatedFile('../test.php');
 // $tr->removeTranslatedFile('ddsd.php');
 // // $translate->setTranslationsToDB('index.json', $translate->getTranslationKeysFromFile('index.php'));
-// $tr->setTranslationsToDB('index',$tr->compareTranslationsWithDB($tr->getTranslationKeysFromFile('index.php'), $tr->getTranslationsFromDB('index', 'en')), 'en');
+// $fileName = '../test.php';
+// $tr->setTranslationsToDB(pathinfo($fileName, PATHINFO_FILENAME),$tr->compareTranslationsWithDB($tr->getTranslationKeysFromFile($fileName), $tr->getTranslationsFromDB(pathinfo($fileName, PATHINFO_FILENAME), 'ru')), 'ru');
 // $re = '/t\\((?:\'|")[a-zA-Z0-9_-]*(?:\'|")\\)/i';
 // $str = file_get_contents('index.php');
 // var_dump( $str);
@@ -131,3 +161,4 @@ class Translate extends Language
 //     $tr->addTranslatedFile($value);
 // }
 
+// print_r($tr->updateAndGetTranslationFile('../test.php', 'hy'));
