@@ -11,7 +11,6 @@
   'translationFileType' => '.json',
   'translatedFiles' => 
   array (
-    0 => '../test.php',
-    1 => '../index.php',
+    0 => '../index.php',
   ),
 );
