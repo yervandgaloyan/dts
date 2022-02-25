@@ -9,7 +9,7 @@ class Language extends Settings{
     {
         if(!isset($_COOKIE['language']))
             return parent::getConfigByName('defaultLanguage');
-        return $_COOKIE[$cookie_name];
+        return $_COOKIE['language'];
     }
 
     // Set language

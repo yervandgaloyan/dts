@@ -1,7 +1,7 @@
 <?php
 
-include_once 'language.php';
-include_once 'translate.php';
+include_once __DIR__.'/core/language.php';
+include_once __DIR__.'/core/translate.php';
 
 $selectedLanguage = '';
 $translations = array();
@@ -24,11 +24,15 @@ function setFileName(string $fileName = null) : int
 
 function setLanguage(string $lang = null) : int
 {
+    global $language;
+
     return $language->setLanguage($lang);
 }
 
 function getAvailableLanguages() : array
 {
+    global $language;
+
     return $language->getAvailableLanguages();
 }
 
