@@ -129,18 +129,24 @@
                     function updateValue(elem, fileName,  lang, key, val){
                         // console.log(elem);
                         console.log(elem.outerHTML);
+                        // elem.outerHTML = `
+                        //     <td>
+                        //     <input type="text" value="${val}" onfocusout="updateTranslationByKey(this, '${fileName}', '${lang}', '${key}', this.value)" autofocus>
+                        //     </td>
+                        // `;
                         elem.outerHTML = `
                             <td>
-                            <input type="text" value="${val}" onfocusout="updateTranslationByKey(this, '${fileName}', '${lang}', '${key}', this.value)" autofocus>
+                                <textarea style="width:100%" onfocusout="updateTranslationByKey(this, '${fileName}', '${lang}', '${key}', this.value)" autofocus>${val}</textarea>
                             </td>
                         `;
                     }
 
                     function updateTranslationByKey(elem, fileName, lang, key, val){
-                        console.log(fileName);
-                        console.log(lang);
-                        console.log(key);
-                        console.log(val);
+                        // console.log(fileName);
+                        // console.log(lang);
+                        // console.log(key);
+                        // console.log(val);
+                        val = val.replace(/\n/g, "<br>");
                         (async () => {
                             // coreApi/translateApi.php?updateTranslationByKey&fileName=../test.php&langCode=hy&key=a1&value=testtest
                             const data = await fetch(`${dir}/coreApi/translateApi.php?updateTranslationByKey&fileName=${fileName}&langCode=${lang}&key=${key}&value=${val}`);

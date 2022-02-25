@@ -10,6 +10,6 @@
   'translationFileType' => '.json',
   'translatedFiles' => 
   array (
-    0 => '../../index.php',
+    0 => '../test.php',
   ),
 );
