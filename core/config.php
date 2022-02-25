@@ -3,13 +3,11 @@
   'defaultLanguage' => 'hy',
   'availableLanguages' => 
   array (
-    'hy' => 'Armenian',
-    'ru' => 'Russian',
+    'hy' => 'Հայերեն',
   ),
   'translationsFolder' => 'translations/',
   'translationFileType' => '.json',
   'translatedFiles' => 
   array (
-    0 => '../test.php',
   ),
 );
